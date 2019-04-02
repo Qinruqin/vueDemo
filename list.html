@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue List</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+		#app{margin: 20px;}
+		.table{margin-top: 20px;width: 900px;}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<div class="form-inline">
+		  <div class="form-group">
+		    <label>id：</label>
+		    <input type="text" class="form-control" v-model='id'>
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputEmail2">name：</label>
+		    <input type="text" class="form-control" v-model='name'>
+		  </div>
+		  <button class="btn btn-primary" @click="add">添加</button>
+		  <div class="form-group">
+		    <label for="exampleInputEmail2">搜索关键字：</label>
+		    <input type="text" class="form-control" v-model='keywords' v-focus v-color="'#2e6da4'">
+		  </div>
+		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr><th>Id</th><th>Name</th><th>Ctime</th><th>Operation</th></tr>
+			</thead>
+			<tbody v-for="(item , index) in search(keywords)" :key="item.id">
+				<tr><td>{{item.id}}</td><td>{{item.name}}</td><td>{{item.ctime | dateFilter }}</td><td class="oper" @click='del(item.id)'><a href="" @click.prevent = "del(item.id)">删除</a></td></tr>
+			</tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+		//全局过滤器
+		Vue.filter('dateFilter',function(datetime,pattern=''){
+			var dt = new Date(datetime);
+			var y = dt.getFullYear();
+			var m = (dt.getMonth() + 1).toString().padStart(2,'0');
+			var d = dt.getDate().toString().padStart(2,'0');
+
+			var hh = dt.getHours().toString().padStart(2,'0');
+			var mm = dt.getMinutes().toString().padStart(2,'0');
+			var ss = dt.getSeconds().toString().padStart(2,'0');
+			if(pattern && pattern == 'yyyy-mmmm-dddd'){
+				return `${y}-${m}-${d}`;
+			}else{
+				return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+			}
+		});
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				id:'',
+				name:'',
+				keywords:'',
+				list:[
+				{id:1,name:'张三',ctime:new Date()},
+				{id:2,name:'李四',ctime:new Date()}
+				]
+			},
+			methods:{
+				add:function(){
+					var dt = new Date();
+					this.list.push({id:this.id,name:this.name,ctime:dt});
+					this.id = '';
+					this.name = '';
+				},
+				del:function(id){
+					var that = this;
+					this.list.forEach(function(item,index) {
+						if(item.id == id){
+							that.list.splice(index,1);
+						}
+					});
+				},
+				search:function(kw){
+					var newList = [];
+					/* 1、some()方法 */
+					// this.list.some(function(item){
+					// 	if(item.name.indexOf(kw) !=-1){
+					// 		newList.push(item);
+					// 	}
+					// });
+					// return newList;
+
+					/* 2、filter()方法 */
+					return this.list.filter(function(item){
+						return item.name.indexOf(kw) !=-1;
+					});
+				}
+			},
+			//私有自定义指令
+			directives:{
+				focus:{
+					inserted:function(el){
+						el.focus();
+					}
+				},
+				//函数简写
+				color:function(el,binding){
+					el.style.color = binding.value;
+				}
+			}
+		});
+	</script>
+</body>
+</html>
