@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 CSS过渡</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+	/*fade是name，【过度动画的时间段】 */
+	.fade-enter-active,.fade-leave-active{transition: all .3s ease;}
+	/* 【过度动画的时间点】 */
+	.fade-enter,.fade-leave-to{opacity: 0;transform: translateX(50px);}
+	</style>
+</head>
+<body>
+	<div id="example-1">
+		<input type="button" name="" value="toggle" @click="flag = !flag">
+		<transition name="fade">
+			<p v-if='flag'>hello</p>
+		</transition>
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-1',
+			data:{
+				flag:false
+			}
+		});
+	</script>
+</body>
+</html>

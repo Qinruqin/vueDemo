@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 CSS动画</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+	/*fade是name，【过度动画的时间段】 */
+	.bounce-enter-active{animation: bounce-in .5s;}
+	/* 【过度动画的时间点】 */
+	.bounce-leave-active{animation: bounce-in .5s reverse;}
+	@keyframes bounce-in {
+	  0% {
+	    transform: scale(0);
+	  }
+	  50% {
+	    transform: scale(1.5);
+	  }
+	  100% {
+	    transform: scale(1);
+	  }
+	}
+	</style>
+</head>
+<body>
+	<!-- CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除。 -->
+	<div id="example-2">
+		<input type="button" name="" value="toggle" @click="flag = !flag">
+		<transition name="bounce">
+			<p v-if='flag'>这是文本内容这是文本内容这是文本内容这是文本内容这是文本内容这是文本内容，这是文本内容这是文本内容这是文本内容，这是文本内容这是文本内容，这是文本内容，这是文本内容，这是文本内容，这是文本内容</p>
+		</transition>
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-2',
+			data:{
+				flag:false
+			}
+		});
+	</script>
+</body>
+</html>

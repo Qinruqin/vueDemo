@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 JavaScript 钩子</title>
+	<!--
+	Velocity 和 jQuery.animate 的工作方式类似，也是用来实现 JavaScript 动画的一个很棒的选择
+	-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+<body>
+	
+	<div id="example-5">
+		<input type="button" name="" value="toggle" @click="flag = !flag">
+		<!-- 推荐对于仅使用 JavaScript 过渡的元素添加 v-bind:css="false"，Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响。 -->
+		<transition @before-enter="beforeEnter" @enter="enter" @leave="leave" v-bind:css="false">
+			<p v-if='flag' class="animated">这是文本内容</p>
+		</transition>
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-5',
+			data:{
+				flag:true
+			},
+			methods:{
+				beforeEnter:function(el){
+					el.style.opacity = 0
+			        el.style.transformOrigin = 'left';
+				},
+				/* 当只用 JavaScript 过渡的时候，在 enter 和 leave 中必须使用 done 进行回调。否则，它们将被同步调用，过渡会立即完成。
+				*/
+				enter:function(el,done){
+					Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+				    Velocity(el, { fontSize: '1em' }, { complete: done });
+				},
+				leave:function(el,done){
+					Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+			        Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+			        Velocity(el, {
+				        rotateZ: '45deg',
+				        translateY: '30px',
+				        translateX: '30px',
+				        opacity: 0
+				    }, { complete: done })
+				},
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 自定义过渡的类名</title>
+	<link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+<body>
+	<!-- CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除。 -->
+	<div id="example-3">
+		<input type="button" name="" value="toggle" @click="flag = !flag">
+		<!-- 通过以下特性自定义过渡类名:
+			enter-class
+			enter-active-class
+			enter-to-class
+			leave-class
+			leave-active-class
+			leave-to-class 
+		-->
+		<!-- :duration="1000"，定制一个显性的过渡持续时间 (以毫秒计)
+			 :duration="{enter:600,leave:200}"，定制进入和移出的持续时间
+		-->
+		<transition name="custom-classes-transition" 
+		enter-active-class="tada"
+        leave-active-class="bounceOutRight" :duration="{enter:600,leave:200}">
+			<p v-if='flag' class="animated">这是文本内容</p>
+		</transition>
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-3',
+			data:{
+				flag:true
+			}
+		});
+	</script>
+</body>
+</html>
