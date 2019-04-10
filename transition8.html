@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 列表的排序过渡</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+	 p{width: 200px;}
+	 .list-item{ display: inline-block;width: 20px; margin-bottom: 10px; margin-right: 10px; text-align: center; border:1px solid #ccc; transition: all 1s; }
+	 .list-enter,.list-leave-to{opacity: 0; transform: translateY(30px);}
+	 .list-leave-active{position: absolute;}
+	</style>
+</head>
+<body>
+	<div id="example-8" class="demo">
+		<button @click="sort">排序</button>
+		<button @click="add">添加</button>
+		<button @click="remove">删除</button>
+		<transition-group name="list" tag="p">
+			<span v-for="item in list" v-bind:key="item" class="list-item">{{item}}</span>
+		</transition>
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-8',
+			data:{
+				list:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+				nextNum:18
+			},
+			methods: {
+			    randomIndex: function () {
+			      return Math.floor(Math.random() * this.list.length)
+			    },
+			    add: function () {
+			      this.list.splice(this.randomIndex(), 0, this.nextNum++)
+			    },
+			    remove: function () {
+			      this.list.splice(this.randomIndex(), 1)
+			    },
+			    sort: function () {
+			      this.list = _.shuffle(this.list)
+			    }
+			}
+		});
+	</script>
+</body>
+</html>

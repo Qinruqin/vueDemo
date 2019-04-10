@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 列表的进入/离开过渡</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+	 li{display: block;padding:4px 10px; margin-bottom: 10px; border:1px dashed #ccc;}
+	 .list-enter,.list-leave{opacity: 0;transform: translateY(30px);}
+	 .list-enter-active,.list-leave-active{transition: all 1s ease;}
+	</style>
+</head>
+<body>
+	<div id="example-7">
+		<div>
+			<label>Id：<input type="text" name="" v-model="id"></label>
+			<label>Name：<input type="text" name="" v-model="name"></label>
+			<input type="button" name="" value="添加" @click="add">
+		</div>
+		<!-- 使用transition-group组件：默认为一个 <span>。
+			通过设置tag指定其元素名。
+			内部元素 总是需要 提供唯一的 key 属性值。
+			过渡模式不可用。 -->
+		<transition-group name="list" tag="ul">
+			<li v-for="(item,index) in list" :key="index" @click="remove(index)">{{item.id}}-{{item.name}}</li>
+		</transition>
+
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-7',
+			data:{
+				id:'',
+				name:'',
+				list:[{id:1,name:'张三'},
+				      {id:2,name:'李四'},
+				      {id:3,name:'王五'}]
+			},
+			methods:{
+				// 自定义 JavaScript 钩子
+				add:function(){
+					this.list.push({id:this.id,name:this.name});
+			        this.id = '';
+			        this.name = '';
+				},
+				remove:function(index){
+					this.list.splice(index,1);
+				}
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 列表的交错过渡</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+	 .list-item{ display: block;margin-right: 10px; transition: all 1s; }
+	 .list-enter,.list-leave-to{opacity: 0; transform: translateY(30px);}
+	 .list-leave-active{position: absolute;}
+	</style>
+</head>
+<body>
+	<div id="example-9" class="demo">
+		<input type="text" name="" v-model="keywords">
+		<transition-group name="list" tag="ul"
+			@before-enter="beforeEnter"
+			@enter="enter"
+			@leave="leave"
+			:css="false"
+		>
+			<li v-for="(item,index) in computedList" :key="index" class="list-item">{{item.name}}</li>
+		</transition>
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-9',
+			data:{
+				list:[{name:'javascript'},
+				      {name:'jQuery'},
+				      {name:'Vue'},
+				      {name:'React'}],
+				keywords:''
+			},
+			computed: {
+			    computedList: function () {
+			      var vm = this;
+			      return this.list.filter(function (item) {
+			        return item.name.toLowerCase().indexOf(vm.keywords.toLowerCase()) !== -1
+			      })
+			    }
+			  },
+			methods: {
+			    beforeEnter: function (el) {
+			        el.style.opacity = 0;
+			        el.style.height = 0;
+			    },
+			    enter: function (el,done) {
+			        var delay = el.dataset.index *100;
+			        setTimeout(function(){
+				      	Velocity(
+				          el,
+				          { opacity: 1, height: '1.6em' },
+				          { complete: done }
+				        )
+				    },delay);
+			    },
+			    leave: function (el,done) {
+			    	var delay = el.dataset.index *100;
+			    	setTimeout(function(){
+				      	Velocity(
+				          el,
+				          { opacity: 0, height: 0 },
+				          { complete: done }
+				        )
+				    },delay)
+			    }
+			}
+		});
+	</script>
+</body>
+</html>
