@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue动画 初始渲染的过渡</title>
+	<!--
+	Velocity 和 jQuery.animate 的工作方式类似，也是用来实现 JavaScript 动画的一个很棒的选择
+	-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<style type="text/css">
+		.appear{ font-size: 40px; color: pink; background: #ccc;}
+		.appear-to{ color: #f00; background: #000;}
+		.appear-active{color: #42b983; background: #f8f8f8; transition: all 1s ease;}
+	</style>
+</head>
+<body>
+	
+	<div id="example-6">
+		<input type="button" name="" value="toggle" @click="flag = !flag">
+		<!-- 通过 appear 特性设置节点在初始渲染的过渡 -->
+		<!-- 使用类名 -->
+		<transition 
+			appear 
+			appear-class="appear"
+			appear-to-class="appear-to"
+			appear-active-class="appear-active"
+		>
+			<p v-if='flag'>这是文本内容</p>
+		</transition>
+		<!-- 自定义Javascript钩子 -->
+		<transition 
+			appear 
+			@before-appear="beforeAppear"
+			@appear="appear"
+			@after-appear="afterAppear"
+		>
+			<p v-if='flag'>这是文本内容</p>
+		</transition>
+
+	</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#example-6',
+			data:{
+				flag:true
+			},
+			methods:{
+				// 自定义 JavaScript 钩子
+				beforeAppear:function(el){
+					el.style.opacity = 0
+			        el.style.transformOrigin = 'left';
+				},
+				appear:function(el){
+					Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+				    Velocity(el, { fontSize: '1em' });
+				},
+				afterAppear:function(el,done){
+					Velocity(el, { translateX: '0px', rotateZ: '50deg' }, { duration: 600 })
+			        Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+			        Velocity(el, {rotateZ: '0deg'});
+				},
+			}
+		});
+	</script>
+</body>
+</html>
