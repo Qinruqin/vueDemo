@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue组件 使用事件抛出一个值</title>
+	<script type="text/javascript" src="./vue.js"></script>
+</head>
+<body>
+	<div id="example-3">
+		<h3>使用事件抛出一个值</h3>
+		<div :style="{fontSize: postFontSize + 'em' }">
+			<comp-demo v-for="post in posts" v-bind:key="post.id" :post='post' @enlarge-text="onEnlargeText"></comp-demo>
+		</div>
+	</div>
+	<template id="comp-demo">
+		<div><p>{{post.id}}-{{post.name}}</p> <p><button @click="$emit('enlarge-text',0.1)">放大字体</button></p></div>
+	</template>
+	<script type="text/javascript">
+		Vue.component('comp-demo',{
+			props:['post'],
+			data:function(){
+				return {count:0}
+			},
+			template:'#comp-demo'
+		});
+		var vm = new Vue({
+			el:'#example-3',
+			data: {
+			    posts: [{id:1,name:'张三'},{id:2,name:'李四'},{id:3,name:'王五'}],
+			    postFontSize: 1
+			},
+			methods:{
+				onEnlargeText:function(size){
+					this.postFontSize += size;
+				}
+			}
+		});
+	</script>
+</body>
+</html>

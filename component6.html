@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue组件 动态组件</title>
+	<script type="text/javascript" src="./vue.js"></script>
+	<style type="text/css">
+		a{display: inline-block; width: 60px;height: 30px;line-height: 30px;text-align: center;text-decoration: none; background: #f8f8f8;border:1px solid #ccc;}
+	</style>
+</head>
+<body>
+	<div id="example-6">
+		<h3>动态组件:</h3>
+		<a href="" @click.prevent="compName='login'">登录</a><a href="" @click.prevent="compName='register'">注册</a>
+		<br/><br/>
+		<component :is='compName'></component>
+	</div>
+	<script type="text/javascript">
+		Vue.component('comp-demo',{
+			props:['value'],
+			data:function(){
+				return {count:0}
+			},
+			template:`<div><strong>这是组件内容！</strong><slot></slot>
+					  </div>
+			        `
+		});
+		var vm = new Vue({
+			el:'#example-6',
+			data: {
+			    compName:'login'
+			},
+			components:{
+				'login':{
+					template:'<p>登录</p>'
+				},
+				'register':{
+					template:'<p>注册</p>'
+				}
+			}
+		});
+	</script>
+</body>
+</html>

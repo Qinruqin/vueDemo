@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue组件 4种方式创建组件</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+<body>
+	<div id="example-1">
+		<h3>4种方式创建组件</h3>
+		<component-one></component-one>
+        <component-two></component-two>
+        <component-three></component-three>
+        <component-three></component-three>
+        <component-four></component-four>
+	</div>
+	<template id="component-three">
+		<button @click="count++">组件3：点击 {{count}} 次.</button>
+	</template>
+	<script type="text/javascript">
+		//方式1. 使用Vue.extend的方式创建
+		var com1 = Vue.extend({
+			template:'<h1>这是使用Vue.extend创建的组件1</h1>'
+		});
+		Vue.component('component-one',com1);
+
+		//方式2. 使用Vue.component的方式创建
+		Vue.component('component-two',{
+			template:'<h2>这是使用Vue.extend创建的组件2</h2>'
+		});
+		// 方式3. 使用Vue.component结合template标签的方式创建
+		Vue.component('component-three',{
+			//data是函数，需要返回数据，原因：确保每个不同的组件的数据是唯一的
+			data:function(){
+				return {count:0}
+			},
+			template:'#component-three'
+		});
+		var vm = new Vue({
+			el:'#example-1',
+			//方式4.局部创建组件
+			components:{
+				'component-four':{template:'<h4>这是使用Vue.extend创建的组件4</h4>'}
+			}
+		});
+	</script>
+</body>
+</html>

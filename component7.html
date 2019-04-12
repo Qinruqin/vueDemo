@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue组件 Prop的传递</title>
+	<script type="text/javascript" src="./vue.js"></script>
+	<style type="text/css">
+		a{display: inline-block; width: 60px;height: 30px;line-height: 30px;text-align: center;text-decoration: none; background: #f8f8f8;border:1px solid #ccc;}
+	</style>
+</head>
+<body>
+	<div id="example-7">
+		<h3>Prop的传递:</h3>
+		<!-- camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名-->
+		<!-- props传入数据：可传入数字、布尔值、数组、对象、对象的所有属性 -->
+		<!-- 传入静态的string类型数据，无需加上:，否则加上: -->
+		<comp-demo title="Hello!" :likes="42" :is-published='true' :comment-ids='[1,2,3,4,5]' :author='{name:"张三",company:"哈哈哈"}'></comp-demo>
+	</div>
+	<script type="text/javascript">
+		Vue.component('comp-demo',{
+			// props:['title','likes','isPublished','commentIds','author'],
+			//props类型，可以是:String / Number / Boolean / Array / Object / Date / Function / Symbol
+			props: {
+			  title: String,
+			  likes: Number,
+			  isPublished: Boolean,
+			  commentIds: Array,
+			  author: Object,
+			  callback: Function,
+			  contactsPromise: Promise // or any other constructor
+			},
+			data:function(){
+				return {count:0}
+			},
+			template:`<div><p>title：{{title}}</p>
+						  <p>likes：{{likes}}</p>
+						  <p>isPublished：{{isPublished}}</p>
+						  <p>commentIds：{{commentIds}}</p>
+						  <p>author：{{author}}</p>
+					  </div>
+			        `
+		});
+		var vm = new Vue({
+			el:'#example-7'
+		});
+	</script>
+</body>
+</html>

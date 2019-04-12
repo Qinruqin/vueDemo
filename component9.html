@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue组件 Prop 验证</title>
+	<script type="text/javascript" src="./vue.js"></script>
+	<style type="text/css">
+		a{display: inline-block; width: 60px;height: 30px;line-height: 30px;text-align: center;text-decoration: none; background: #f8f8f8;border:1px solid #ccc;}
+	</style>
+</head>
+<body>
+	<div id="example-9">
+		<h3>Prop 验证:</h3>
+		<!-- 父级 prop 的更新会向下流动到子组件中，但是反过来则不行 -->
+		<comp-demo  :prop-a="42" prop-b="a42" :prop-c="123" :prop-d="1" prop-f="warning"></comp-demo>
+	</div>
+	<script type="text/javascript">
+		Vue.component('comp-demo',{
+			props:{
+				propA:Number,// 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+				propB:[String,Number],//多个可能的类型
+				propC:{  //必填项
+					type: Number,
+				    required: true
+				},
+				propD:{ //带有默认值的数字
+					type:Number,
+					default:10
+				},
+				propE:{ // 带有默认值的对象
+					type:Object,
+					default:function(){
+						return {msg:'Hello!'}
+					}
+				},
+				propF:{ //自定义验证函数
+					validator:function(value){
+						return ['success','warning','danger'].indexOf(value)!== -1
+					}
+				}
+
+			},
+			template:`<div><p>propA:{{propA}}</p>
+						 <p>propB:{{propB}}</p>
+						 <p>propC:{{propC}}</p>
+						 <p>propD:{{propD}}</p>
+						 <p>propE:{{propE}}</p>
+						 <p>propF:{{propF}}</p>
+					  </div>
+			        `
+		});
+		var vm = new Vue({
+			el:'#example-9'
+		});
+	</script>
+</body>
+</html>
