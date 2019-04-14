@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>组件-ref的使用</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+<body>
+	<div id="example-11">
+		<button @click="show">获取元素</button>
+		<h1 ref='myh1'>这是父组件的内容</h1>
+		<cmp ref='mycmp'></cmp>
+	</div>
+	<template id="cmp">
+		<div>
+			<h3>这是子组件的内容</h3>
+		</div>
+	</template>
+	<script type="text/javascript">
+		var cmp = {
+			template:"#cmp",
+			data(){
+				return {
+					componentMsg:'这个子组件的componentMsg'
+				}
+			},
+			methods:{
+				componentFn(){
+					console.log('这是子组件的方法');
+				}
+			}
+		}
+		var vm = new Vue({
+			el:"#example-11",
+			data:{
+				msg:'这是父组件msg'
+			},
+			methods:{
+				show:function(){
+					console.log(this.$refs.myh1.innerText);
+					//通过ref获取子组件的数据
+					console.log(this.$refs.mycmp.componentMsg);
+					//通过ref调用子组件的方法
+					this.$refs.mycmp.componentFn();
+				}
+			},
+			components:{
+				'cmp':cmp
+			}
+
+		})
+	</script>
+</body>
+</html>
