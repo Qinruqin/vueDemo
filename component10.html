@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>组件实例-评论列表</title>
+	<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+<body>
+ <div id="example-10">
+ 	<cmp-box @func="loadData"></cmp-box>
+
+ 	<ul class="list-group">
+ 		<li class="list-group-item" v-for="item in list" :key="item.id">
+ 			<span class="badge">评论人：{{item.user}}</span>
+ 			{{item.content}}
+ 		</li>
+ 	</ul>
+ 	
+ </div>
+ <template id="cmp1">
+ 	<div>
+ 		<div class="form-group">
+ 			<label>评论人：</label>
+ 			<input type="" name="" class="form-control" v-model="user">
+ 		</div>
+ 		<div class="form-group">
+ 			<label>评论内容：</label>
+ 			<textarea class="form-control" v-model="content"></textarea>
+ 		</div>
+ 		<div class="form-group">
+ 			<button class="btn btn-primary" @click="postComment">发表评论</button>
+ 		</div>
+ 	</div>
+ </template>
+ <script type="text/javascript">
+ 	var comp = {
+ 		data(){
+ 			return{
+ 				user:'',
+ 				content:''
+ 			}
+ 		},
+ 		template:"#cmp1",
+ 		methods:{
+ 			postComment(){
+ 				var comment = {id:Date.now(),user:this.user,content:this.content};
+ 				//从localStorag中获取所有评论
+ 				var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+ 				list.unshift(comment);
+ 				//重新保存，最新的评论
+ 				localStorage.setItem('cmts',JSON.stringify(list));
+ 				this.$emit('func');
+ 				this.user = this.content = '';
+
+ 			}
+ 		}
+ 	}
+ 	var vm = new Vue({
+ 		el:"#example-10",
+ 		data:{
+ 			list:[]
+ 		},
+ 		created:function(){
+ 			this.loadData();
+ 		},
+ 		methods:{
+ 			loadData:function(){
+ 				var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+
+ 				this.list = list;
+ 			}
+
+ 		},
+ 		components:{
+ 			'cmp-box':comp
+ 		}
+ 	});
+ </script>
+</body>
+</html>
