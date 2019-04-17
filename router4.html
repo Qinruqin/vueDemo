@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue Router 命令视图实现经典布局</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	<style type="text/css">
+	    *{margin: 0;padding: 0;}
+		.header{height: 100px;background-color: pink;}
+		.container{display: flex;height: 300px;}
+		.container .left{flex: 2;background-color: orange;}
+		.container .main{flex: 8;background-color: red;}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<router-view class="header"></router-view>	
+		<div class="container">
+			<router-view name="left" class="left"></router-view>	
+			<router-view name="main" class="main"></router-view>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		var header = {
+			template:"<div>这是Header内容区域</div>"
+		};
+		var leafBox = {
+			template:"<div>这是leafBox侧边栏区域</div>"
+		};
+		var mainBox = {
+			template:"<div>这是mainBox主体区域</div>"
+		};
+		var router= new VueRouter({
+			routes:[
+				{
+					path:'/',
+					components:{
+						default: header,
+						left:leafBox,	
+						main:mainBox
+					}
+				}
+				
+			],
+			linkActiveClass:"myactive"
+
+		});
+		var vm = new Vue({
+			el:"#app",
+			router
+		});
+	</script>
+
+</body>
+</html>
