@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue Router 2种方式传参</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	<style type="text/css">
+		.myactive{color:red;font-size: 3s0px;font-weight: 800;text-decoration: underline; background-color: #ccc;}
+		.v-enter,.v-leave-to{opacity: 0;transform: translateX(200px);}
+		.v-enter-acitve,.v-leave-active{transition: all .5s ease-in;}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<!-- 1.1 第一种传参方式url写法 -->
+		<router-link to='/login?id=12&name=zs'>登录</router-link>
+		<!-- 2.1 第二种传参方式url写法 -->
+		<router-link to='/register/10/ls'>注册</router-link>
+		<transition mode='out-in'>
+			<router-view></router-view>	
+		</transition>		
+	</div>
+	<script type="text/javascript">
+		// 1.2 第1种传参方式 
+		var login = {
+			template:'<h3>登录组件--{{$route.query.id}}--{{$route.query.name}}</h3>',
+			created(){
+				console.log(this.$route);
+			}
+		};
+		// 2.2 第2种传参方式
+		var register = {
+			template:'<h3>注册组件--{{$route.params.id}}--{{$route.params.name}}</h3>',
+			created(){
+				console.log(this.$route);
+			}
+		};
+		var routerObj = new VueRouter({
+			routes:[
+				{path:'/',redirect:'/login'},
+				{path:'/login',component:login},
+				{path:'/register/:id/:name',component:register}
+			],
+			linkActiveClass:"myactive"
+
+		});
+		var vm = new Vue({
+			el:"#app",
+			router:routerObj
+		});
+	</script>
+
+</body>
+</html>
