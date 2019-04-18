@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>事件 keyup</title>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<input type="text" name="" v-model='firstname' @keyup="getFullname">+
+		<input type="text" name="" v-model='lastname' @keyup="getFullname">=
+		<input type="text" name="" v-model='fullname'>
+	</div>
+	
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				firstname:'',
+				lastname:'',
+				fullname:'',
+			},
+			methods:{
+				getFullname(){
+					this.fullname = this.firstname + "-" + this.lastname;
+				}
+			}
+		});
+	</script>
+
+</body>
+</html>
